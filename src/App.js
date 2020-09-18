@@ -1,25 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { ApolloProvider } from "@apollo/client";
+import client from "./client";
+import Message from "./pages/message";
+import Welcome from "./pages/welcome";
+import { useLocalStorage } from "react-use";
 
 function App() {
+  const [user, setValue] = useLocalStorage("user", "");
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ApolloProvider client={client}>
+      <div className="container">
+        {!!user.length ? (
+          <Message user={user} />
+        ) : (
+          <Welcome setValue={setValue} />
+        )}
+      </div>
+    </ApolloProvider>
   );
 }
 
